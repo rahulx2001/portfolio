@@ -397,7 +397,8 @@
         });
 
         // Scroll reveal animation
-        const revealElements = document.querySelectorAll('.skill-card, .project-card, .experience-card, .cert-card, .contact-item');
+        const revealElements = document.querySelectorAll('.skill-card, .experience-card, .cert-card, .contact-item');
+        const projectCards = document.querySelectorAll('.project-card');
         
         const revealOnScroll = () => {
             revealElements.forEach(el => {
@@ -407,6 +408,16 @@
                 
                 if (elementTop < windowHeight - elementVisible) {
                     el.classList.add('revealed');
+                }
+            });
+            
+            // Special staggered animation for project cards
+            projectCards.forEach(card => {
+                const windowHeight = window.innerHeight;
+                const cardTop = card.getBoundingClientRect().top;
+                
+                if (cardTop < windowHeight - 50) {
+                    card.classList.add('animate-in');
                 }
             });
         };
