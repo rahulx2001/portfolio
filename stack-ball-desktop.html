@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stack Ball - OPAC Games</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .game-container {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            padding: 40px;
+        }
+        
+        /* Left Panel */
+        .left-panel {
+            width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        
+        .logo-container {
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+        
+        .logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo-block {
+            width: 40px;
+            height: 55px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .logo-block:first-child { 
+            background: #FF6B6B; 
+            border-radius: 10px 0 0 10px;
+        }
+        .logo-block:nth-child(2) { background: #4ECDC4; }
+        .logo-block:nth-child(3) { background: #FFE66D; }
+        .logo-block:last-child { 
+            background: #95E1D3; 
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: -1px;
+        }
+        
+        .logo-subtext {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1a1a2e;
+            letter-spacing: 3px;
+        }
+        
+        .game-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .stats-container {
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-label {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .stat-value {
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .stat-value.score {
+            color: #FFE66D;
+        }
+        
+        .stat-value.combo {
+            color: #FF6B6B;
+        }
+        
+        /* Game Canvas Container */
+        .canvas-container {
+            position: relative;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 
+                0 25px 80px rgba(0,0,0,0.5),
+                0 0 0 1px rgba(255,255,255,0.1),
+                inset 0 0 100px rgba(255,255,255,0.05);
+        }
+        
+        #gameCanvas {
+            display: block;
+        }
+        
+        .canvas-glow {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,107,107,0.1) 0%, transparent 50%);
+            pointer-events: none;
+            animation: glow-rotate 10s linear infinite;
+        }
+        
+        @keyframes glow-rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Right Panel */
+        .right-panel {
+            width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        
+        .controls-container {
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .controls-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .control-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 0;
+        }
+        
+        .control-key {
+            background: linear-gradient(145deg, #2a2a4a, #1a1a2e);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            min-width: 80px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .control-desc {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+        
+        .power-indicator {
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .power-title {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .power-bar-container {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+        }
+        
+        .power-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #FF6B6B, #FFE66D);
+            border-radius: 10px;
+            transition: width 0.1s ease;
+        }
+        
+        .power-label {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+        }
+        
+        /* Floating particles background */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(100vh) rotate(0deg); 
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { 
+                transform: translateY(-100vh) rotate(720deg); 
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Particles -->
+    <div class="bg-particles" id="bgParticles"></div>
+    
+    <div class="game-container">
+        <!-- Left Panel -->
+        <div class="left-panel">
+            <div class="logo-container">
+                <div class="logo">
+                    <div class="logo-block"></div>
+                    <div class="logo-block"></div>
+                    <div class="logo-block"></div>
+                    <div class="logo-block"></div>
+                </div>
+                <div class="logo-text">OPAC</div>
+                <div class="logo-subtext">GAMES</div>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stat-item">
+                    <span class="stat-label">Score</span>
+                    <span class="stat-value score" id="scoreDisplay">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Level</span>
+                    <span class="stat-value" id="levelDisplay">1</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Combo</span>
+                    <span class="stat-value combo" id="comboDisplay">x1</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Best Score</span>
+                    <span class="stat-value" id="bestDisplay">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Game Canvas -->
+        <div class="canvas-container">
+            <div class="canvas-glow"></div>
+            <canvas id="gameCanvas" width="500" height="750"></canvas>
+        </div>
+        
+        <!-- Right Panel -->
+        <div class="right-panel">
+            <div class="controls-container">
+                <div class="controls-title">Controls</div>
+                <div class="control-item">
+                    <span class="control-key">HOLD</span>
+                    <span class="control-desc">Smash through platforms</span>
+                </div>
+                <div class="control-item">
+                    <span class="control-key">RELEASE</span>
+                    <span class="control-desc">Bounce on platforms</span>
+                </div>
+                <div class="control-item">
+                    <span class="control-key">SPACE</span>
+                    <span class="control-desc">Quick smash</span>
+                </div>
+            </div>
+            
+            <div class="power-indicator">
+                <div class="power-title">Smash Power</div>
+                <div class="power-bar-container">
+                    <div class="power-bar" id="powerBar"></div>
+                </div>
+                <div class="power-label">
+                    <span>0%</span>
+                    <span id="powerPercent">0%</span>
+                    <span>100%</span>
+                </div>
+            </div>
+            
+            <div class="controls-container">
+                <div class="controls-title">Legend</div>
+                <div class="control-item">
+                    <span class="control-key" style="background: linear-gradient(145deg, #00D4FF, #0077B6);">BLUE</span>
+                    <span class="control-desc">Normal platform</span>
+                </div>
+                <div class="control-item">
+                    <span class="control-key" style="background: linear-gradient(145deg, #FF6B6B, #c0392b);">RED</span>
+                    <span class="control-desc">Breakable (bonus!)</span>
+                </div>
+                <div class="control-item">
+                    <span class="control-key" style="background: linear-gradient(145deg, #2d3436, #000);">BLACK</span>
+                    <span class="control-desc">Danger! Don't smash</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Create background particles
+        const bgParticles = document.getElementById('bgParticles');
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+            particle.style.width = particle.style.height = (5 + Math.random() * 15) + 'px';
+            bgParticles.appendChild(particle);
+        }
+        
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // UI Elements
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const levelDisplay = document.getElementById('levelDisplay');
+        const comboDisplay = document.getElementById('comboDisplay');
+        const bestDisplay = document.getElementById('bestDisplay');
+        const powerBar = document.getElementById('powerBar');
+        const powerPercent = document.getElementById('powerPercent');
+        
+        // Game state
+        let ball = {
+            x: canvas.width / 2,
+            y: 120,
+            radius: 28,
+            velocity: 0,
+            gravity: 0.6,
+            bounceForce: -14,
+            isSmashing: false,
+            smashPower: 0
+        };
+        
+        // Colors
+        const platformColors = [
+            '#00D4FF', '#00B4D8', '#0096C7', '#0077B6', 
+            '#7B2CBF', '#9D4EDD', '#4ECDC4', '#45B7D1'
+        ];
+        const breakableColor = '#FF6B6B';
+        const dangerColor = '#2d3436';
+        
+        // Game variables
+        let platforms = [];
+        let particles = [];
+        let platformRotation = 0;
+        let rotationSpeed = 0.015;
+        let score = 0;
+        let level = 1;
+        let combo = 1;
+        let bestScore = 0;
+        let showIntro = true;
+        let introOpacity = 1;
+        let gameStarted = false;
+        let screenShake = 0;
+        let lastBreakTime = 0;
+        
+        // Initialize platforms
+        function initPlatforms() {
+            platforms = [];
+            for (let i = 0; i < 15; i++) {
+                addPlatform(220 + i * 40);
+            }
+        }
+        
+        function addPlatform(y) {
+            let segments = [];
+            let numSegments = 8;
+            let numGaps = 1 + Math.floor(Math.random() * 2);
+            let gaps = [];
+            
+            for (let g = 0; g < numGaps; g++) {
+                let gapIndex;
+                do {
+                    gapIndex = Math.floor(Math.random() * numSegments);
+                } while (gaps.includes(gapIndex));
+                gaps.push(gapIndex);
+            }
+            
+            let rand = Math.random();
+            let type = rand > 0.85 ? 'danger' : (rand > 0.5 ? 'breakable' : 'normal');
+            let color = type === 'danger' ? dangerColor : 
+                       (type === 'breakable' ? breakableColor : 
+                        platformColors[Math.floor(Math.random() * platformColors.length)]);
+            
+            for (let j = 0; j < numSegments; j++) {
+                if (!gaps.includes(j)) {
+                    segments.push({
+                        startAngle: (j / numSegments) * Math.PI * 2,
+                        endAngle: ((j + 1) / numSegments) * Math.PI * 2 - 0.08,
+                        broken: false
+                    });
+                }
+            }
+            
+            platforms.push({
+                y: y,
+                radius: 140,
+                innerRadius: 45,
+                height: 18,
+                segments: segments,
+                color: color,
+                type: type,
+                destroyed: false,
+                hitTime: 0
+            });
+        }
+        
+        // Particle system
+        function createParticles(x, y, color, count = 20) {
+            for (let i = 0; i < count; i++) {
+                let angle = (Math.PI * 2 / count) * i + Math.random() * 0.5;
+                let speed = 5 + Math.random() * 10;
+                particles.push({
+                    x: x,
+                    y: y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed - 5,
+                    size: 4 + Math.random() * 12,
+                    color: color,
+                    life: 1,
+                    rotation: Math.random() * Math.PI * 2,
+                    rotSpeed: (Math.random() - 0.5) * 0.3
+                });
+            }
+        }
+        
+        function createScorePopup(x, y, text, color) {
+            particles.push({
+                x: x,
+                y: y,
+                vx: 0,
+                vy: -3,
+                text: text,
+                color: color,
+                life: 1,
+                isText: true
+            });
+        }
+        
+        // Draw functions
+        function drawBackground() {
+            // Main gradient
+            let gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#FFE259');
+            gradient.addColorStop(0.5, '#FFA751');
+            gradient.addColorStop(1, '#FF6B6B');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Animated background circles
+            ctx.globalAlpha = 0.1;
+            for (let i = 0; i < 8; i++) {
+                let x = (canvas.width / 8) * i + 30;
+                let y = 80 + Math.sin(Date.now() / 1000 + i) * 30;
+                let radius = 20 + Math.sin(Date.now() / 800 + i * 2) * 10;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+            
+            // Vignette effect
+            let vignette = ctx.createRadialGradient(
+                canvas.width / 2, canvas.height / 2, canvas.height * 0.3,
+                canvas.width / 2, canvas.height / 2, canvas.height * 0.8
+            );
+            vignette.addColorStop(0, 'rgba(0,0,0,0)');
+            vignette.addColorStop(1, 'rgba(0,0,0,0.3)');
+            ctx.fillStyle = vignette;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        
+        function drawBall() {
+            ctx.save();
+            
+            // Motion blur when smashing
+            if (ball.isSmashing && ball.velocity > 5) {
+                ctx.globalAlpha = 0.3;
+                for (let i = 1; i <= 3; i++) {
+                    ctx.beginPath();
+                    ctx.arc(ball.x, ball.y - i * 15, ball.radius - i * 3, 0, Math.PI * 2);
+                    ctx.fillStyle = '#FF4757';
+                    ctx.fill();
+                }
+                ctx.globalAlpha = 1;
+            }
+            
+            // Ball shadow
+            ctx.beginPath();
+            ctx.ellipse(ball.x + 4, ball.y + 6, ball.radius * 0.9, ball.radius * 0.35, 0, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0,0,0,0.25)';
+            ctx.fill();
+            
+            // Main ball with 3D gradient
+            let gradient = ctx.createRadialGradient(
+                ball.x - ball.radius * 0.35, ball.y - ball.radius * 0.35, 0,
+                ball.x, ball.y, ball.radius
+            );
+            gradient.addColorStop(0, '#FF8A8A');
+            gradient.addColorStop(0.3, '#FF4757');
+            gradient.addColorStop(0.7, '#E74C3C');
+            gradient.addColorStop(1, '#C0392B');
+            
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            
+            // Rim light
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Highlight
+            ctx.beginPath();
+            ctx.arc(ball.x - ball.radius * 0.35, ball.y - ball.radius * 0.35, ball.radius * 0.25, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255,255,255,0.7)';
+            ctx.fill();
+            
+            // Smash trail effect
+            if (ball.isSmashing) {
+                ctx.beginPath();
+                ctx.moveTo(ball.x, ball.y + ball.radius);
+                ctx.lineTo(ball.x - 25, ball.y + ball.radius + 60);
+                ctx.lineTo(ball.x + 25, ball.y + ball.radius + 60);
+                ctx.closePath();
+                
+                let trailGradient = ctx.createLinearGradient(
+                    ball.x, ball.y + ball.radius,
+                    ball.x, ball.y + ball.radius + 60
+                );
+                trailGradient.addColorStop(0, 'rgba(255,255,255,0.9)');
+                trailGradient.addColorStop(0.5, 'rgba(255,200,100,0.5)');
+                trailGradient.addColorStop(1, 'rgba(255,100,100,0)');
+                ctx.fillStyle = trailGradient;
+                ctx.fill();
+            }
+            
+            ctx.restore();
+        }
+        
+        function drawPlatforms() {
+            platforms.forEach((platform) => {
+                if (platform.destroyed) return;
+                
+                ctx.save();
+                ctx.translate(canvas.width / 2, platform.y);
+                
+                // Platform glow for breakable
+                if (platform.type === 'breakable') {
+                    ctx.shadowColor = platform.color;
+                    ctx.shadowBlur = 15;
+                }
+                
+                platform.segments.forEach(segment => {
+                    if (segment.broken) return;
+                    
+                    ctx.beginPath();
+                    ctx.arc(0, 0, platform.radius, 
+                           segment.startAngle + platformRotation, 
+                           segment.endAngle + platformRotation);
+                    ctx.arc(0, 0, platform.innerRadius, 
+                           segment.endAngle + platformRotation, 
+                           segment.startAngle + platformRotation, true);
+                    ctx.closePath();
+                    
+                    // 3D gradient
+                    let grad = ctx.createRadialGradient(0, -20, platform.innerRadius, 0, 20, platform.radius);
+                    let baseColor = platform.color;
+                    grad.addColorStop(0, lightenColor(baseColor, 30));
+                    grad.addColorStop(0.5, baseColor);
+                    grad.addColorStop(1, darkenColor(baseColor, 30));
+                    
+                    ctx.fillStyle = grad;
+                    ctx.fill();
+                    
+                    // Border
+                    ctx.strokeStyle = darkenColor(baseColor, 40);
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    
+                    // Inner highlight
+                    ctx.beginPath();
+                    ctx.arc(0, 0, platform.radius - 5, 
+                           segment.startAngle + platformRotation + 0.05, 
+                           segment.endAngle + platformRotation - 0.05);
+                    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+                });
+                
+                ctx.restore();
+            });
+        }
+        
+        function drawParticles() {
+            particles.forEach(p => {
+                ctx.save();
+                ctx.globalAlpha = p.life;
+                
+                if (p.isText) {
+                    ctx.font = 'bold 24px Poppins';
+                    ctx.fillStyle = p.color;
+                    ctx.textAlign = 'center';
+                    ctx.fillText(p.text, p.x, p.y);
+                } else {
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rotation);
+                    ctx.fillStyle = p.color;
+                    
+                    // Draw as rounded rect for more interesting particles
+                    roundRect(ctx, -p.size/2, -p.size/2, p.size, p.size, 3);
+                    ctx.fill();
+                }
+                
+                ctx.restore();
+            });
+        }
+        
+        function roundRect(ctx, x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            ctx.lineTo(x + r, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath();
+        }
+        
+        function drawIntro() {
+            ctx.globalAlpha = introOpacity;
+            
+            // Overlay
+            ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Logo background
+            const logoY = canvas.height / 2 - 80;
+            const colors = ['#FF6B6B', '#4ECDC4', '#FFE66D', '#95E1D3'];
+            const blockWidth = 50;
+            const totalWidth = blockWidth * 4;
+            
+            for (let i = 0; i < 4; i++) {
+                ctx.fillStyle = colors[i];
+                ctx.beginPath();
+                if (i === 0) {
+                    roundRect(ctx, canvas.width/2 - totalWidth/2, logoY - 35, blockWidth, 70, 12);
+                } else if (i === 3) {
+                    roundRect(ctx, canvas.width/2 - totalWidth/2 + i * blockWidth, logoY - 35, blockWidth, 70, 12);
+                } else {
+                    ctx.rect(canvas.width/2 - totalWidth/2 + i * blockWidth, logoY - 35, blockWidth, 70);
+                }
+                ctx.fill();
+            }
+            
+            // OPAC text
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 36px Poppins';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('OPAC', canvas.width / 2, logoY - 5);
+            
+            // GAMES text
+            ctx.fillStyle = '#1a1a2e';
+            ctx.font = 'bold 16px Poppins';
+            ctx.letterSpacing = '4px';
+            ctx.fillText('GAMES', canvas.width / 2, logoY + 22);
+            
+            // Game title
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 48px Poppins';
+            ctx.fillText('STACK BALL', canvas.width / 2, canvas.height / 2 + 60);
+            
+            // Subtitle with pulsing animation
+            let pulse = 0.5 + Math.sin(Date.now() / 300) * 0.3;
+            ctx.globalAlpha = introOpacity * pulse;
+            ctx.font = '20px Poppins';
+            ctx.fillStyle = 'rgba(255,255,255,0.9)';
+            ctx.fillText('Click or Press Space to Start', canvas.width / 2, canvas.height / 2 + 120);
+            
+            ctx.globalAlpha = 1;
+        }
+        
+        function drawScore() {
+            // Score shadow
+            ctx.fillStyle = 'rgba(0,0,0,0.2)';
+            ctx.font = 'bold 56px Poppins';
+            ctx.textAlign = 'center';
+            ctx.fillText(score, canvas.width / 2 + 3, 78);
+            
+            // Score
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillText(score, canvas.width / 2, 75);
+            
+            // Level indicator
+            ctx.font = 'bold 18px Poppins';
+            ctx.fillStyle = 'rgba(255,255,255,0.7)';
+            ctx.fillText(`LEVEL ${level}`, canvas.width / 2, 105);
+        }
+        
+        // Helper functions
+        function lightenColor(color, percent) {
+            let num = parseInt(color.replace('#', ''), 16);
+            let r = Math.min(255, (num >> 16) + percent);
+            let g = Math.min(255, ((num >> 8) & 0x00FF) + percent);
+            let b = Math.min(255, (num & 0x0000FF) + percent);
+            return '#' + (0x1000000 + r * 0x10000 + g * 0x100 + b).toString(16).slice(1);
+        }
+        
+        function darkenColor(color, percent) {
+            let num = parseInt(color.replace('#', ''), 16);
+            let r = Math.max(0, (num >> 16) - percent);
+            let g = Math.max(0, ((num >> 8) & 0x00FF) - percent);
+            let b = Math.max(0, (num & 0x0000FF) - percent);
+            return '#' + (0x1000000 + r * 0x10000 + g * 0x100 + b).toString(16).slice(1);
+        }
+        
+        // Update functions
+        function updateParticles() {
+            particles = particles.filter(p => {
+                if (p.isText) {
+                    p.y += p.vy;
+                    p.life -= 0.025;
+                } else {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.5;
+                    p.vx *= 0.98;
+                    p.rotation += p.rotSpeed;
+                    p.life -= 0.02;
+                }
+                return p.life > 0;
+            });
+        }
+        
+        function updateUI() {
+            scoreDisplay.textContent = score;
+            levelDisplay.textContent = level;
+            comboDisplay.textContent = `x${combo}`;
+            bestDisplay.textContent = bestScore;
+            
+            let power = ball.isSmashing ? Math.min(100, ball.smashPower) : 0;
+            powerBar.style.width = power + '%';
+            powerPercent.textContent = Math.round(power) + '%';
+        }
+        
+        function checkCollision() {
+            platforms.forEach((platform) => {
+                if (platform.destroyed) return;
+                
+                if (ball.y + ball.radius > platform.y - 12 && 
+                    ball.y + ball.radius < platform.y + 15 && 
+                    ball.velocity > 0) {
+                    
+                    let dx = ball.x - canvas.width / 2;
+                    let distance = Math.abs(dx);
+                    
+                    if (distance < platform.radius && distance > platform.innerRadius - 15) {
+                        let now = Date.now();
+                        
+                        if (ball.isSmashing) {
+                            if (platform.type === 'danger') {
+                                // Hit danger platform while smashing - lose combo
+                                combo = 1;
+                                screenShake = 15;
+                                ball.velocity = ball.bounceForce * 1.5;
+                            } else {
+                                // Break through
+                                platform.segments.forEach(seg => {
+                                    if (!seg.broken) {
+                                        seg.broken = true;
+                                        createParticles(ball.x, platform.y, platform.color, 15);
+                                    }
+                                });
+                                
+                                // Combo system
+                                if (now - lastBreakTime < 500) {
+                                    combo = Math.min(combo + 1, 10);
+                                }
+                                lastBreakTime = now;
+                                
+                                let points = (platform.type === 'breakable' ? 20 : 10) * combo;
+                                score += points;
+                                
+                                createScorePopup(ball.x, platform.y - 30, '+' + points, '#FFE66D');
+                                
+                                if (platform.segments.every(s => s.broken)) {
+                                    platform.destroyed = true;
+                                }
+                                
+                                screenShake = 5;
+                            }
+                        } else {
+                            // Bounce
+                            ball.velocity = ball.bounceForce;
+                            combo = 1;
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Game loop
+        function gameLoop() {
+            // Apply screen shake
+            ctx.save();
+            if (screenShake > 0) {
+                ctx.translate(
+                    (Math.random() - 0.5) * screenShake,
+                    (Math.random() - 0.5) * screenShake
+                );
+                screenShake *= 0.9;
+                if (screenShake < 0.5) screenShake = 0;
+            }
+            
+            // Clear and draw background
+            ctx.clearRect(-10, -10, canvas.width + 20, canvas.height + 20);
+            drawBackground();
+            
+            if (showIntro) {
+                drawPlatforms();
+                drawBall();
+                drawIntro();
+                platformRotation += rotationSpeed * 0.5;
+            } else {
+                // Fade out intro
+                if (introOpacity > 0) {
+                    introOpacity -= 0.05;
+                }
+                
+                // Update game
+                platformRotation += rotationSpeed;
+                
+                if (gameStarted) {
+                    ball.velocity += ball.gravity;
+                    ball.y += ball.velocity;
+                    
+                    if (ball.isSmashing) {
+                        ball.smashPower = Math.min(100, ball.smashPower + 5);
+                    } else {
+                        ball.smashPower = Math.max(0, ball.smashPower - 3);
+                    }
+                    
+                    // Auto-demo: randomly toggle smashing
+                    if (Math.random() > 0.97) {
+                        ball.isSmashing = !ball.isSmashing;
+                    }
+                    
+                    // Keep ball in bounds
+                    if (ball.y < 100) {
+                        ball.y = 100;
+                        ball.velocity = Math.abs(ball.velocity) * 0.8;
+                    }
+                    
+                    // Scroll platforms
+                    if (ball.y > canvas.height * 0.45) {
+                        let diff = ball.y - canvas.height * 0.45;
+                        ball.y = canvas.height * 0.45;
+                        platforms.forEach(p => p.y -= diff * 0.6);
+                        
+                        // Remove off-screen platforms
+                        platforms = platforms.filter(p => p.y > -50);
+                        
+                        // Add new platforms
+                        while (platforms.length < 15) {
+                            let lastY = Math.max(...platforms.map(p => p.y));
+                            addPlatform(lastY + 40);
+                        }
+                        
+                        // Level up
+                        let newLevel = Math.floor(score / 200) + 1;
+                        if (newLevel > level) {
+                            level = newLevel;
+                            rotationSpeed = 0.015 + level * 0.003;
+                        }
+                    }
+                    
+                    checkCollision();
+                    updateParticles();
+                    
+                    // Update best score
+                    if (score > bestScore) {
+                        bestScore = score;
+                    }
+                }
+                
+                // Draw game elements
+                drawPlatforms();
+                drawParticles();
+                drawBall();
+                drawScore();
+                
+                // Draw intro overlay if fading
+                if (introOpacity > 0) {
+                    drawIntro();
+                }
+            }
+            
+            ctx.restore();
+            updateUI();
+            requestAnimationFrame(gameLoop);
+        }
+        
+        // Input handling
+        function startGame() {
+            if (showIntro) {
+                showIntro = false;
+                gameStarted = true;
+            }
+            ball.isSmashing = true;
+        }
+        
+        function stopSmash() {
+            ball.isSmashing = false;
+        }
+        
+        canvas.addEventListener('mousedown', startGame);
+        canvas.addEventListener('mouseup', stopSmash);
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startGame(); });
+        canvas.addEventListener('touchend', (e) => { e.preventDefault(); stopSmash(); });
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                startGame();
+            }
+        });
+        
+        document.addEventListener('keyup', (e) => {
+            if (e.code === 'Space') {
+                stopSmash();
+            }
+        });
+        
+        // Start
+        initPlatforms();
+        gameLoop();
+    </script>
+</body>
+</html>
