@@ -50,6 +50,10 @@
     <nav class="navbar">
         <div class="nav-content">
             <a href="#" class="logo">🚀 Rahul</a>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <span class="theme-icon sun">☀️</span>
+                <span class="theme-icon moon">🌙</span>
+            </button>
             <button class="mobile-menu-btn" aria-label="Toggle menu">
                 <span></span>
                 <span></span>
@@ -69,14 +73,41 @@
 
     <!-- Hero Section -->
     <section class="hero">
+        <!-- Motion Graphics: Floating Shapes -->
         <div class="hero-shapes">
             <div class="shape shape-1"></div>
             <div class="shape shape-2"></div>
             <div class="shape shape-3"></div>
         </div>
+
+        <!-- Motion Graphics: Data Particles -->
+        <div class="data-particles" id="dataParticles"></div>
+
+        <!-- Motion Graphics: Glowing Orbs -->
+        <div class="glow-orb glow-orb-1"></div>
+        <div class="glow-orb glow-orb-2"></div>
+        <div class="glow-orb glow-orb-3"></div>
+
+        <!-- Motion Graphics: Floating Data Icons -->
+        <div class="floating-icons">
+            <i class="floating-icon fas fa-chart-bar"></i>
+            <i class="floating-icon fas fa-database"></i>
+            <i class="floating-icon fas fa-chart-line"></i>
+            <i class="floating-icon fas fa-code"></i>
+            <i class="floating-icon fas fa-chart-pie"></i>
+            <i class="floating-icon fas fa-brain"></i>
+        </div>
+
+        <!-- Motion Graphics: Data Stream Lines -->
+        <div class="data-stream data-stream-1"></div>
+        <div class="data-stream data-stream-2"></div>
+        <div class="data-stream data-stream-3"></div>
+
         <div class="hero-content">
             <h1>Hi, I'm <span class="highlight">Rahul Kumar Singh</span></h1>
-            <p class="tagline">Data Analyst | Business Intelligence</p>
+            <p class="tagline">
+                <span class="typing-text" id="typingText"></span><span class="typing-cursor">|</span>
+            </p>
             <p class="intro">Turning complex datasets into actionable insights to improve user experience, engagement,
                 and product success.</p>
             <div class="cta-buttons">
@@ -192,11 +223,6 @@
                     <h3>Tools & Platforms</h3>
                     <p>Jupyter Notebook, Git, GitHub, VS Code, Google Colab</p>
                 </div>
-                <div class="skill-card">
-                    <i class="fas fa-robot"></i>
-                    <h3>AI & Machine Learning</h3>
-                    <p>LLMs, Prompt Engineering</p>
-                </div>
             </div>
         </div>
     </section>
@@ -242,11 +268,18 @@
         <div class="container">
             <h2 class="section-title">Featured Projects</h2>
             <div class="projects-grid">
+                <!-- OpaC Games - Elegant Particle Animation -->
                 <div class="project-card">
-                    <div class="project-image project-video">
-                        <video autoplay muted loop playsinline>
-                            <source src="assets/opac-games-demo.mp4" type="video/mp4">
-                        </video>
+                    <div class="project-image particle-viz" data-theme="purple">
+                        <canvas class="particle-canvas" id="opacParticles"></canvas>
+                        <div class="viz-overlay">
+                            <div class="viz-icon">🎮</div>
+                            <div class="viz-stats">
+                                <span class="stat-big" data-count="100847">0</span>
+                                <span class="stat-label">User Events Analyzed</span>
+                            </div>
+                            <div class="viz-badge">+35% Growth</div>
+                        </div>
                     </div>
                     <div class="project-info">
                         <h3>User Data Analytics – OpaC Games</h3>
@@ -261,6 +294,8 @@
                             target="_blank">View on LinkedIn →</a>
                     </div>
                 </div>
+
+                <!-- InsightFlow - Keep existing video -->
                 <div class="project-card">
                     <div class="project-image project-video">
                         <video autoplay muted loop playsinline>
@@ -271,8 +306,7 @@
                         <h3>InsightFlow - End-to-End Data Analysis</h3>
                         <p>Comprehensive data analysis project combining Data Warehousing, ETL Pipeline, and Business
                             Intelligence. Built complete Medallion Architecture (Bronze → Silver → Gold) with
-                            PostgreSQL, transforming 79K+ CRM & ERP records into analytics-ready star schema. Leveraged
-                            AI-powered coding assistant to accelerate SQL query development and dashboard creation.</p>
+                            PostgreSQL, transforming 79K+ CRM & ERP records into analytics-ready star schema.</p>
                         <div class="project-tech">
                             <span>SQL</span>
                             <span>PostgreSQL</span>
@@ -283,29 +317,75 @@
                             target="_blank">View Dashboard →</a>
                     </div>
                 </div>
+
+                <!-- ZestyEats - Elegant Particle Animation -->
                 <div class="project-card">
-                    <div class="project-image project-video">
-                        <video autoplay muted loop playsinline>
-                            <source src="assets/zestyeats-demo.mp4" type="video/mp4">
-                        </video>
+                    <div class="project-image particle-viz" data-theme="cyan">
+                        <canvas class="particle-canvas" id="zestyParticles"></canvas>
+                        <div class="viz-overlay">
+                            <div class="viz-icon">🍕</div>
+                            <div class="viz-stats">
+                                <span class="stat-big" data-count="50234">0</span>
+                                <span class="stat-label">Orders Analyzed</span>
+                            </div>
+                            <div class="viz-badge cyan">15+ Locations</div>
+                        </div>
                     </div>
                     <div class="project-info">
                         <h3>ZestyEats Food Delivery Analysis</h3>
                         <p>Built interactive Power BI dashboard analyzing 50K+ orders across 15+ locations. Used AI
                             tools to speed up data cleaning and DAX formula generation. Tracked delivery times and
-                            restaurant KPIs to identify optimization opportunities.</p>
+                            restaurant KPIs.</p>
                         <div class="project-tech">
                             <span>Power BI</span>
                             <span>DAX</span>
                             <span>AI-Analytics</span>
                         </div>
-                        <a href="https://github.com/rahulx2001/ZestyEatsAnalysis" class="project-link"
-                            target="_blank">View on GitHub →</a>
+                        <a href="https://zestyeats-temp.vercel.app" class="project-link" target="_blank">View Case Study
+                            →</a>
                     </div>
                 </div>
+
+                <!-- Bharat Startup Reality - Elegant Particle Animation -->
                 <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-search-dollar"></i>
+                    <div class="project-image particle-viz" data-theme="red">
+                        <canvas class="particle-canvas" id="startupParticles"></canvas>
+                        <div class="viz-overlay">
+                            <div class="viz-icon">💀</div>
+                            <div class="viz-stats">
+                                <span class="stat-big">₹50K+ Cr</span>
+                                <span class="stat-label">Worth Analyzed</span>
+                            </div>
+                            <div class="viz-badge red"><span data-count="54">0</span>+ Failed Startups</div>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Bharat Startup Reality</h3>
+                        <p>Analyzed 50+ failed Indian startups worth ₹50,000+ Cr. Web scraped real data, researched
+                            failure patterns, and built an interactive dashboard with AI-powered rebuild suggestions.
+                        </p>
+                        <div class="project-tech">
+                            <span>Python</span>
+                            <span>Web Scraping</span>
+                            <span>GPT-4o</span>
+                        </div>
+                        <a href="https://startup-graveyard-ui.vercel.app" class="project-link" target="_blank">View Live
+                            Project →</a>
+                    </div>
+                </div>
+
+                <!-- Hidden Transactions - Elegant Particle Animation -->
+                <div class="project-card">
+                    <div class="project-image particle-viz" data-theme="blue">
+                        <canvas class="particle-canvas" id="fraudParticles"></canvas>
+                        <div class="viz-overlay">
+                            <div class="viz-icon">🔍</div>
+                            <div class="viz-stats">
+                                <span class="stat-big" data-count="25847">0</span>
+                                <span class="stat-label">Transactions Scanned</span>
+                            </div>
+                            <div class="viz-badge blue">-40% False Positives</div>
+                        </div>
                     </div>
                     <div class="project-info">
                         <h3>Hidden Transactions Investigation</h3>
@@ -321,9 +401,19 @@
                             class="project-link" target="_blank">View on GitHub →</a>
                     </div>
                 </div>
+
+                <!-- Financial Risk - Elegant Particle Animation -->
                 <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-chart-pie"></i>
+                    <div class="project-image particle-viz" data-theme="green">
+                        <canvas class="particle-canvas" id="financeParticles"></canvas>
+                        <div class="viz-overlay">
+                            <div class="viz-icon">📈</div>
+                            <div class="viz-stats">
+                                <span class="stat-big">$2.1M</span>
+                                <span class="stat-label">Portfolio Tracked</span>
+                            </div>
+                            <div class="viz-badge green">50+ Securities</div>
+                        </div>
                     </div>
                     <div class="project-info">
                         <h3>Financial Risk Analysis Dashboard</h3>
@@ -338,9 +428,19 @@
                             target="_blank">View on GitHub →</a>
                     </div>
                 </div>
+
+                <!-- E-Commerce - Elegant Particle Animation -->
                 <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-shopping-cart"></i>
+                    <div class="project-image particle-viz" data-theme="orange">
+                        <canvas class="particle-canvas" id="ecomParticles"></canvas>
+                        <div class="viz-overlay">
+                            <div class="viz-icon">🛒</div>
+                            <div class="viz-stats">
+                                <span class="stat-big" data-count="75000">0</span>
+                                <span class="stat-label">Transactions Analyzed</span>
+                            </div>
+                            <div class="viz-badge orange">+25% ROI</div>
+                        </div>
                     </div>
                     <div class="project-info">
                         <h3>E-Commerce Performance Insights</h3>
@@ -422,6 +522,27 @@
                 navbar.classList.add('scrolled');
             } else {
                 navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Theme Toggle (Day/Night Mode)
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            body.classList.add('light-mode');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+
+            // Save preference
+            if (body.classList.contains('light-mode')) {
+                localStorage.setItem('theme', 'light');
+            } else {
+                localStorage.setItem('theme', 'dark');
             }
         });
 
@@ -509,7 +630,7 @@
             });
         });
 
-        // Close button handler
+        // Close button for mobile menu
         const closeMenuBtn = document.querySelector('.close-menu-btn');
         if (closeMenuBtn) {
             closeMenuBtn.addEventListener('click', () => {
@@ -517,6 +638,308 @@
                 navLinks.classList.remove('active');
             });
         }
+
+        // ===== MOTION GRAPHICS: TYPING ANIMATION =====
+        const typingTexts = [
+            'Data Analyst',
+            'Business Analyst',
+            'Product Analyst',
+            'SQL Developer',
+            'Python Developer',
+            'BI Developer'
+        ];
+        let textIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingSpeed = 100;
+        const deletingSpeed = 50;
+        const pauseTime = 2000;
+
+        function typeText() {
+            const typingElement = document.getElementById('typingText');
+            if (!typingElement) return;
+
+            const currentText = typingTexts[textIndex];
+
+            if (isDeleting) {
+                typingElement.textContent = currentText.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingElement.textContent = currentText.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            if (!isDeleting && charIndex === currentText.length) {
+                isDeleting = true;
+                setTimeout(typeText, pauseTime);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                textIndex = (textIndex + 1) % typingTexts.length;
+                setTimeout(typeText, 500);
+            } else {
+                setTimeout(typeText, isDeleting ? deletingSpeed : typingSpeed);
+            }
+        }
+        typeText();
+
+        // ===== MOTION GRAPHICS: DATA PARTICLES =====
+        function createDataParticles() {
+            const container = document.getElementById('dataParticles');
+            if (!container) return;
+
+            const particleCount = 20;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'data-particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (6 + Math.random() * 4) + 's';
+                particle.style.width = (3 + Math.random() * 4) + 'px';
+                particle.style.height = particle.style.width;
+                // Randomize colors
+                const colors = ['var(--primary)', 'var(--accent)', 'var(--primary-light)', '#ec4899'];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.boxShadow = `0 0 ${10 + Math.random() * 10}px ${particle.style.background}`;
+                container.appendChild(particle);
+            }
+        }
+        createDataParticles();
+
+        // ===== MOTION GRAPHICS: ENHANCED PARALLAX =====
+        window.addEventListener('mousemove', (e) => {
+            const shapes = document.querySelectorAll('.shape');
+            const orbs = document.querySelectorAll('.glow-orb');
+            const floatingIcons = document.querySelectorAll('.floating-icon');
+            const dataStreams = document.querySelectorAll('.data-stream');
+            const x = e.clientX / window.innerWidth - 0.5;
+            const y = e.clientY / window.innerHeight - 0.5;
+
+            shapes.forEach((shape, index) => {
+                const speed = (index + 1) * 30;
+                shape.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+
+            orbs.forEach((orb, index) => {
+                const speed = (index + 1) * 15;
+                orb.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+
+            floatingIcons.forEach((icon, index) => {
+                const speed = (index + 1) * 10;
+                icon.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+
+            dataStreams.forEach((stream, index) => {
+                const speed = (index + 1) * 5;
+                const baseRotation = [15, -20, 5][index] || 0;
+                stream.style.transform = `rotate(${baseRotation}deg) translate(${x * speed}px, ${y * speed}px)`;
+            });
+        });
+
+        // ===== MOTION GRAPHICS: 3D TILT EFFECT ON CARDS =====
+        const tiltCards = document.querySelectorAll('.project-card, .skill-card');
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px) scale(1.02)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0) scale(1)';
+            });
+        });
+
+        // ===== MOTION GRAPHICS: MAGNETIC HOVER EFFECT =====
+        const magneticElements = document.querySelectorAll('.btn, .contact-item, .cert-card');
+        magneticElements.forEach(el => {
+            el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                el.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+            });
+
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = 'translate(0, 0)';
+            });
+        });
+
+        // ===== MOTION GRAPHICS: SCROLL PROGRESS INDICATOR =====
+        const progressBar = document.createElement('div');
+        progressBar.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), #ec4899);
+            z-index: 10001;
+            transition: width 0.1s ease;
+        `;
+        document.body.appendChild(progressBar);
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            progressBar.style.width = scrollPercent + '%';
+        });
+
+        // ===== MOTION GRAPHICS: INTERSECTION OBSERVER FOR ANIMATIONS =====
+        const animateOnScroll = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.section-title, .about-text, .hire-content, .experience-card').forEach(el => {
+            animateOnScroll.observe(el);
+        });
+
+        // ===== ANIMATED NUMBER COUNTERS =====
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const increment = target / (duration / 16);
+            const timer = setInterval(() => {
+                start += increment;
+                if (start >= target) {
+                    element.textContent = target.toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(start).toLocaleString();
+                }
+            }, 16);
+        }
+
+        // Observe counters and animate when visible
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = parseInt(el.dataset.count);
+                    if (target && !el.dataset.animated) {
+                        el.dataset.animated = 'true';
+                        animateCounter(el, target);
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('[data-count]').forEach(el => {
+            counterObserver.observe(el);
+        });
+
+        // ===== ELEGANT PARTICLE ANIMATIONS =====
+        const particleConfigs = {
+            purple: { color: 'rgba(168, 85, 247, 0.8)', glow: '#a855f7' },
+            cyan: { color: 'rgba(34, 211, 238, 0.8)', glow: '#22d3ee' },
+            red: { color: 'rgba(239, 68, 68, 0.8)', glow: '#ef4444' },
+            blue: { color: 'rgba(59, 130, 246, 0.8)', glow: '#3b82f6' },
+            green: { color: 'rgba(34, 197, 94, 0.8)', glow: '#22c55e' },
+            orange: { color: 'rgba(249, 115, 22, 0.8)', glow: '#f97316' }
+        };
+
+        function initParticleCanvas(canvasId, theme) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const config = particleConfigs[theme] || particleConfigs.purple;
+
+            // Set canvas size
+            function resize() {
+                canvas.width = canvas.offsetWidth * 2;
+                canvas.height = canvas.offsetHeight * 2;
+                ctx.scale(2, 2);
+            }
+            resize();
+
+            // Particles
+            const particles = [];
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.offsetWidth,
+                    y: Math.random() * canvas.offsetHeight,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5 - 0.3,
+                    size: Math.random() * 3 + 1,
+                    alpha: Math.random() * 0.5 + 0.3
+                });
+            }
+
+            function animate() {
+                const w = canvas.offsetWidth;
+                const h = canvas.offsetHeight;
+                ctx.clearRect(0, 0, w, h);
+
+                // Update and draw particles
+                particles.forEach((p, i) => {
+                    // Update position
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    // Wrap around
+                    if (p.x < 0) p.x = w;
+                    if (p.x > w) p.x = 0;
+                    if (p.y < 0) p.y = h;
+                    if (p.y > h) p.y = 0;
+
+                    // Draw particle
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = config.color.replace('0.8', p.alpha.toString());
+                    ctx.fill();
+
+                    // Draw glow
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size * 2, 0, Math.PI * 2);
+                    const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 2);
+                    gradient.addColorStop(0, config.color.replace('0.8', (p.alpha * 0.3).toString()));
+                    gradient.addColorStop(1, 'transparent');
+                    ctx.fillStyle = gradient;
+                    ctx.fill();
+
+                    // Draw connections
+                    particles.slice(i + 1).forEach(p2 => {
+                        const dx = p.x - p2.x;
+                        const dy = p.y - p2.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+
+                        if (dist < 80) {
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.strokeStyle = config.color.replace('0.8', ((1 - dist / 80) * 0.2).toString());
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    });
+                });
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        // Initialize all particle canvases
+        initParticleCanvas('opacParticles', 'purple');
+        initParticleCanvas('zestyParticles', 'cyan');
+        initParticleCanvas('startupParticles', 'red');
+        initParticleCanvas('fraudParticles', 'blue');
+        initParticleCanvas('financeParticles', 'green');
+        initParticleCanvas('ecomParticles', 'orange');
     </script>
 </body>
 
